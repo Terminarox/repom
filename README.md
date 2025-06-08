@@ -1,0 +1,2 @@
+# repom
+dnf repository remover
