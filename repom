@@ -1,0 +1,60 @@
+#!/usr/bin/ksh
+
+list_repos() {
+	print "listing /etc/yum.repos.d/ ..."
+	set -A repos
+	typeset -i i
+	i=0
+	for repo in $(ls /etc/yum.repos.d)
+	do
+		let i=$i+1
+		repos[$i]=$repo
+	done
+	i=0
+	print "repos listed!"
+}
+
+print_repos() {
+	typeset -i i
+        i=0
+        for repo in ${repos[@]}
+        do
+		let i+=1
+        	print $i: $repo
+        done
+	i=0
+}
+
+not_dev_yet() {
+	print "function not accessible, work in progress"
+}
+
+remove_rep() {
+	print_repos
+	print "Please select the repo you want to delete : "
+	print "> \c"
+	typeset i
+	read i
+	sudo rm -i /etc/yum.repos.d/${repos[$i]}
+	exit
+}
+
+select_option() {
+	print "Please, select an option:"
+	print "1) remove repo"
+	print "2) not dev yet"
+	print "> \c"
+	typeset opt
+	read opt
+	case $opt in
+		1)
+			remove_rep
+		;;
+		2)
+			not_dev_yet
+		;;
+	esac
+}
+
+list_repos
+select_option
